@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -e  # Fail on errors
+
+# Run behat commands in a running behat container
+docker exec $(docker-compose ps -q behat) behat --colors --format=pretty --out=std --format=html --out=html_report --format=junit --out=html_report/junit "$@"
+
+echo "To view HTML report visit: http://<your-docker-host-ip>:8000/html_report/"
+echo "To view HTML report visit: http://<your-docker-host-ip>:8000/html_report/junit/core.xml"

@@ -1,0 +1,46 @@
+# Local overrides to the default profile
+default:
+  suites:
+    core:
+      paths:
+        - %paths.base%/features/Core
+      contexts:
+        - Drupal\DrupalExtension\Context\DrupalContext
+        - Drupal\DrupalExtension\Context\MinkContext
+        - Drupal\DrupalExtension\Context\MessageContext
+        - Drupal\DrupalExtension\Context\DrushContext
+        - Core\MainContext:
+            parameters:
+              screenshot_dir: %paths.base%/html_report/screenshots
+              main_url: https://bash.im
+
+  extensions:
+    Behat\MinkExtension:
+      goutte: ~
+      selenium2: ~
+      # Use goutte (basic PHP browser, super fast) as the default driver.
+      default_session: goutte
+      # For real browser testing and tests requiring JS use selenium2 driver.
+      # Tag features/scenarious with @javascript to use the selenium2 driver.
+      javascript_session: selenium2
+      # Configure browser to be used. Browser must be available on wd_host.
+      # Stick with chrome by default. It's 2x faster than firefox or phantomjs (your results may vary).
+      browser_name: chrome
+      selenium2:
+        wd_host: http://browser:4444/wd/hub
+        capabilities: { "browser": "chrome", "version": "*" }
+
+     # Behat HTML formatter.
+    emuse\BehatHTMLFormatter\BehatHTMLFormatterExtension:
+      name: html
+      renderer: Twig
+      file_name: index
+      print_args: true
+      print_outp: true
+      loop_break: true
+
+docker:
+  extensions:
+    Behat\MinkExtension:
+      goutte: ~
+      selenium2: ~
